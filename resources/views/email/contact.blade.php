@@ -1,10 +1,10 @@
 @component('mail::message')
 # New Contact Message
 
- {{ $subject }}
+{{ $subject }}
 
 @component('mail::panel')
-    {{ $message }}
+{{ $message }}
 @endcomponent
 
 @component('mail::button', ['url' => route('contact')])
