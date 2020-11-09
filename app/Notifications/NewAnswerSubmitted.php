@@ -3,9 +3,8 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
 class NewAnswerSubmitted extends Notification
 {
@@ -46,10 +45,10 @@ class NewAnswerSubmitted extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('A new answer was submitted to yuor question!')
-                    ->line("$this->name just suggested: ". $this->answer->ans)
-                    ->action('View All Answers', route('questions.show', $this->question->id))
-                    ->line('Thank you for using LaravelqAnswers!');
+            ->line('A new answer was submitted to yuor question!')
+            ->line("$this->name just suggested: " . $this->answer->ans)
+            ->action('View All Answers', route('questions.show', $this->question->id))
+            ->line('Thank you for using LaravelqAnswers!');
     }
 
     /**
