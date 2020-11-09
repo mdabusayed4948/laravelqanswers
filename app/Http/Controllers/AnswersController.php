@@ -13,7 +13,7 @@ class AnswersController extends Controller
 
     public function __construct()
     {
-        $this->middleware( 'auth' );
+        $this->middleware('auth');
     }
     /**
      * Store a newly created resource in storage.
@@ -21,22 +21,22 @@ class AnswersController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store( Request $request )
+    public function store(Request $request)
     {
-        $this->validate( $request, [
+        $this->validate($request, [
             'ans'         => "required|min:15",
             'question_id' => 'required|integer',
-        ] );
+        ]);
 
         $answer      = new Answer();
         $answer->ans = $request->ans;
-        $answer->user()->associate( Auth::id() );
+        $answer->user()->associate(Auth::id());
 
-        $question = Question::findOrFail( $request->question_id );
-        $question->answers()->save( $answer );
-        $question->user->notify( new NewAnswerSubmitted( $answer, $question, Auth::user()->name ) );
+        $question = Question::findOrFail($request->question_id);
+        $question->answers()->save($answer);
+        $question->user->notify(new NewAnswerSubmitted($answer, $question, Auth::user()->name));
 
-        return redirect()->route( 'questions.show', $question->id );
+        return redirect()->route('questions.show', $question->id);
     }
 
     /**
@@ -45,17 +45,17 @@ class AnswersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit( $id )
+    public function edit($id)
     {
         $style  = 'display:none';
-        $answer = Answer::findOrFail( $id );
+        $answer = Answer::findOrFail($id);
 
-        $question = Question::findOrFail( $answer->question_id );
+        $question = Question::findOrFail($answer->question_id);
 
-        if ( $answer->user->id != Auth::id() ) {
-            return abort( 403 );
+        if ($answer->user->id != Auth::id()) {
+            return abort(403);
         }
-        return view( 'answer.edit', compact( 'answer', 'question', 'style' ) );
+        return view('answer.edit', compact('answer', 'question', 'style'));
     }
 
     /**
@@ -65,21 +65,21 @@ class AnswersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update( Request $request, $id )
+    public function update(Request $request, $id)
     {
-        $this->validate( $request, [
+        $this->validate($request, [
             'ans'         => "required|min:15",
             'question_id' => 'required|integer',
-        ] );
+        ]);
 
-        $answer      = Answer::findOrFail( $id );
+        $answer      = Answer::findOrFail($id);
         $answer->ans = $request->ans;
-        $answer->user()->associate( Auth::id() );
+        $answer->user()->associate(Auth::id());
 
-        $question = Question::findOrFail( $request->question_id );
-        $question->answers()->save( $answer );
+        $question = Question::findOrFail($request->question_id);
+        $question->answers()->save($answer);
 
-        return redirect()->route( 'questions.show', $question->id );
+        return redirect()->route('questions.show', $question->id);
     }
 
     /**
@@ -88,9 +88,9 @@ class AnswersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy( $id )
+    public function destroy($id)
     {
-        $answer = Answer::findOrFail( $id );
+        $answer = Answer::findOrFail($id);
         $answer->delete();
         return redirect()->back();
     }
